@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="cz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Aktivity</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-grey bg-grey" style="background-color: rgba(224, 222, 222, 0.436)">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" style="color:rgb(0, 0, 0)" href="home.html">Domů</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:rgb(0, 0, 0)" href="aktivity.html">Aktivity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:rgb(0, 0, 0)" href="cile.html">Cíle</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 100px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+    <div class="container mt-4">
+        <h2>Přidat aktivitu</h2>
+        <form>
+            <div class="form-group">
+                <label for="typAktivity">Typ aktivity:</label>
+                <input type="text" class="form-control" id="typAktivity" placeholder="Zadejte aktivitu">
+            </div>
+            <div class="form-group">
+                <label for="delka">Délka trvání (v minutách):</label>
+                <input type="number" class="form-control" id="delka" placeholder="Zadejte délku">
+            </div>
+            <div class="form-group">
+                <label for="vzdalenost">Vzdálenost (volitelné):</label>
+                <input type="number" class="form-control" id="vzdalenost" placeholder="Zadejte vzdálenost">
+            </div>
+            <div class="form-group">
+                <label for="poznamky">Poznámky:</label>
+                <textarea class="form-control" id="poznamky" rows="3" placeholder="Přidejte poznámky"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Přidat aktivitu</button>
+        </form>
+    </div>
+
+    <div class="container mt-4">
+        <h2>Minulé aktivity</h2>
+        <div class="form-group">
+            <label for="typFilter">Filtrovat podle typu:</label>
+            <select class="form-control" id="typFilter">
+                <option>Všechny</option>
+                <option>Běh</option>
+                <option>Jízda na kole</option>
+                <option>Plavání</option>
+                <option>Posilování</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="datumFilter">Filtrovat podle data:</label>
+            <input type="date" class="form-control" id="datumFilter">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Typ aktivity</th>
+                    <th>Délka (minuty)</th>
+                    <th>Vzdálenost (km)</th>
+                    <th>Poznámky</th>
+                    <th>Datum</th>
+                </tr>
+            </thead>
+            <tbody id="seznamAktivit">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        var minuleAktivity = [
+            { typ: 'Běh', delka: 20, vzdalenost: 4, poznámky: 'Pořád se musím zlepšit, ale jde to.', datum: '2024-02-20' },
+            { typ: 'Plavání', delka: 45, vzdalenost: 7, poznámky: '-', datum: '2024-03-03' },
+        ];
+
+        function vykresliSeznamAktivit(aktivity) {
+            var seznamAktivit = document.getElementById('seznamAktivit');
+            seznamAktivit.innerHTML = '';
+
+            aktivity.forEach(function (aktivita) {
+                var tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${aktivita.typ}</td>
+                    <td>${aktivita.delka}</td>
+                    <td>${aktivita.vzdalenost ? aktivita.vzdalenost : '-'}</td>
+                    <td>${aktivita.poznámky}</td>
+                    <td>${aktivita.datum}</td>
+                `;
+                seznamAktivit.appendChild(tr);
+            });
+        }
+
+        vykresliSeznamAktivit(minuleAktivity);
+
+        document.getElementById('typFilter').addEventListener('change', function () {
+            var filtrovaneAktivity = minuleAktivity.filter(function (aktivita) {
+                var typFilter = document.getElementById('typFilter').value;
+                return typFilter === 'Všechny' || aktivita.typ === typFilter;
+            });
+            vykresliSeznamAktivit(filtrovaneAktivity);
+        });
+
+        document.getElementById('datumFilter').addEventListener('change', function () {
+            var filtrovaneAktivity = minuleAktivity.filter(function (aktivita) {
+                var datumFilter = document.getElementById('datumFilter').value;
+                return datumFilter === '' || aktivita.datum === datumFilter;
+            });
+            vykresliSeznamAktivit(filtrovaneAktivity);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
